@@ -3,13 +3,13 @@ export const leftNavData = [{
     index: 'play',
     name: 'testDemo_play',
     icon: 'el-icon-monitor',
-   
+    isRouter:true
 },
 {
     index: 'video',
     name: 'testDemo_video',
     icon: 'el-icon-monitor',
-   
+    isRouter:true
 },
 // {
 //     index: 'carpark',

@@ -134,9 +134,6 @@ export const startApp = (renderer: Renderer) => {
             })
             .catch(next);
     });
-     app.use('/api/getResouce', (req, res, next) => {
-        res.send('请求成功');
-     });
     app.use(renderer.renderMiddleware);
     /**
      * 监听端口

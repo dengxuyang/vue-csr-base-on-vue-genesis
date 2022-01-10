@@ -89,7 +89,7 @@ export default {
      // this.$store.commit("setcurrentNav", { index, name });
      this.$emit('menuClick',item)
       if (isRouter) {
-        //this.$router.push({ name: index });
+        this.$router.push({ name: index });
 
         //收起展开的submenu
         //活跃的时候不关，做判断
