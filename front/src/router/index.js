@@ -30,9 +30,9 @@ VueRouter.prototype.push = function push(location) {
 }
 
 const router = new VueRouter({
-    mode: 'history',
-    base: process.env.BASE_URL,
-    routes
+    // mode: 'history',
+    // base: process.env.BASE_URL,
+    // routes
 })
 // router.beforeEach((to, from, next) => {
 //     if (to.name !== 'loginpage' && !store.state.login_status) next({ name: 'loginpage' })
