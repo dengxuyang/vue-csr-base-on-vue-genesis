@@ -4,7 +4,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "dev": "ts-node genesis.dev -p=tsconfig.json",
+        "serve": "ts-node genesis.dev -p=tsconfig.json",
         "build:win": "rimraf dist && cross-env NODE_ENV=production ts-node genesis.build -p=tsconfig.json",
         "build": "rm -rf dist && cross-env NODE_ENV=production ts-node genesis.build -p=tsconfig.json",
         "start": "cross-env NODE_ENV=production ts-node genesis.prod -p=tsconfig.json",
