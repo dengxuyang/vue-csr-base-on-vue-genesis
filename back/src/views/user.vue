@@ -40,9 +40,33 @@
               <!-- left -->
               <el-row :gutter="20">
                 <el-col :sm="24" :md="18" :lg="18" :xl="12" :offset="0">
-                  <el-form-item :label="`测试：`">
-                    <!-- 文本框 -->
-                    <el-input v-model="form.test"></el-input>
+                  <el-form-item label="姓名：">
+                    <el-input v-model="form.name"></el-input>
+                  </el-form-item>
+                  <el-form-item label="手机号：">
+                    <el-input v-model="form.mobile"></el-input>
+                  </el-form-item>
+                  <el-form-item label="登录密码：">
+                    <el-input v-model="form.password"></el-input>
+                  </el-form-item>
+                  <el-form-item label="部门：">
+                    <el-input v-model="form.department"></el-input>
+                  </el-form-item>
+                  <el-form-item label="类型：">
+                    <el-input v-model="form.type"></el-input>
+                  </el-form-item>
+                  <el-form-item label="性别：">
+                    <el-input v-model="form.sex"></el-input>
+                  </el-form-item>
+                  <el-form-item label="出生年月">
+                    <el-input v-model="form.birthday"></el-input>
+                  </el-form-item>
+                  <el-form-item label="民族：">
+                    <el-input v-model="form.nationality"></el-input>
+                  </el-form-item>
+                  <el-form-item label>
+                    <el-button type="primary" size="mini" @click="confirm">确认</el-button>
+                    <el-button size="mini" @click="cancel">取消</el-button>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -58,7 +82,7 @@ import Vue from "vue";
 import TreeComp from '../components/treecomp/TreeComp';
 import MainTabBar from '../components/maintabbar/MainTabBar';
 import TableComp from '../components/tablecomp/TableComp';
-import {request} from '../request';
+import { request } from '../request';
 export default Vue.extend({
   name: "user",
   components: {
@@ -91,7 +115,7 @@ export default Vue.extend({
     getData() {
       let url =
         "https://mock.mengxuegu.com/mock/61e0ed8b17249f68847fc031/api/getTreeData";
-        request.get(url).then((result) => {
+      request.get(url).then((result) => {
         this.list = result.data.data
         console.log(result);
       }).catch((err) => {
@@ -116,6 +140,12 @@ export default Vue.extend({
     treeClick(data) {
       this.treeSeleteData = data
       this.tabItem[0].label = data.name
+    },
+    confirm() {
+
+    },
+    cancel() {
+
     },
     onQuery() {
 

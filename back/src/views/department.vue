@@ -46,6 +46,7 @@ import axios from "axios";
 import TreeComp from '../components/treecomp/TreeComp';
 import MainTabBar from '../components/maintabbar/MainTabBar';
 import TableComp from '../components/tablecomp/TableComp';
+import {request} from '../request';
 export default Vue.extend({
   name: "user",
   components:{
@@ -70,15 +71,15 @@ export default Vue.extend({
     };
   },
   mounted() {
-    //  this.getData()
+      this.getData()
   },
   watch: {},
   methods: {
      getData() {
       let url =
-        "http://localhost:3000/api/getData";
-      axios.get(url).then((result) => {
-        this.list=result.data
+        "https://mock.mengxuegu.com/mock/61e0ed8b17249f68847fc031/api/getTreeData";
+        request.get(url).then((result) => {
+        this.list=result.data.data
          console.log(result);
      }).catch((err) => {
      });;
