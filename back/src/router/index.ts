@@ -13,16 +13,16 @@ export const createRouter = () => {
         mode: 'history',
         routes: [
             {
-                path: '/play',
+                path: '/user',
                 component: () =>
-                    import(/* webpackChunkName: "home" */ '../views/play.vue')
+                    import(/* webpackChunkName: "user" */ '../views/user.vue').then((m) => m.default)
             },
             {
-                path: '/video',
+                path: '/department',
                 component: () =>
                     import(
-                        /* webpackChunkName: "signin" */ '../views/video.vue'
-                    )
+                        /* webpackChunkName: "department" */ '../views/department.vue'
+                    ).then((m) => m.default)
             }
         ]
     });

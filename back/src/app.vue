@@ -1,8 +1,5 @@
 <template>
   <div class="app">
-    <!-- 服务端渲染1122212121 -->
-    <el-button type="primary" size="default" @click="emitC">切换路由</el-button>
-    <!-- {{$store.state.code}} -->
     <router-view />
   </div>
 </template>
@@ -19,27 +16,14 @@ export default Vue.extend({
   watch: {},
   methods: {
     clsoe() {},
-
-    emitC() {
-     let  curcode:string
-      if (this.$route.path == "/video") {
-        this.$router.push({ path: "/play" });
-        curcode='play'
-      } else {
-        this.$router.push({ path: "/video" });
-         curcode='video'
-      }
-  this.$root.$emit('my-event', curcode);
-      // this.$store.commit('setcode','setdaole')
-    },
   },
 });
 </script>
 <style lang="less" scoped>
 .app {
-  padding: 100px;
-  text-align: center;
-
+  // padding: 100px;
+  // text-align: center;
+  height: 100%;
 }
 // .text {
 //   color: #999;

@@ -65,7 +65,7 @@ export default {
       isCollapse: false,
       openeds: [1],
       leftNavData: leftNavData,
-      defaultActive: "play",
+      defaultActive: "user",
     };
   },
 
@@ -168,8 +168,8 @@ export default {
   margin-left: 8px;
   padding-bottom: 5px;
 }
-.el-submenu__title:hover {
-  color: #e70f0f;
+/deep/.el-submenu__title:hover {
+  background-color: #04918e;
 }
 
 .one_menu_item.is-active {

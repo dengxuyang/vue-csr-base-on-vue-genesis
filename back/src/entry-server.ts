@@ -5,7 +5,9 @@ import ElementUI from 'element-ui';
 import App from './app.vue';
 import {store} from './store';
 import { createRouter } from './router';
-import 'element-ui/lib/theme-chalk/index.css';
+import {request} from '../src/request';
+// import 'element-ui/lib/theme-chalk/index.css';
+Vue.prototype.$request = request;
 const router = createRouter();
 Vue.use(ElementUI);
 export default async (renderContext: RenderContext): Promise<Vue> => {

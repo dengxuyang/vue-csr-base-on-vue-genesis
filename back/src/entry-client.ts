@@ -5,10 +5,11 @@ import App from './app.vue';
 import { store } from './store';
 import { createRouter } from './router';
 import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
-const router = createRouter();
 
+// import 'element-ui/lib/theme-chalk/index.css';
+const router = createRouter();
 Vue.use(ElementUI);
+
 export default async (clientOptions: ClientOptions): Promise<Vue> => {
     return createClientApp({
         App,

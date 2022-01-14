@@ -1,60 +1,28 @@
 <template>
   <div id="app">
     <div class="container">
-      <div>
-        <left-nav-bar @menuClick='menuClick'></left-nav-bar>
-      </div>
-      <div>
-        <remote-view v-show="code=='play'" ref="remoteCom" :fetch="() =>fetch('play')"  @my-event="myEvent" />
-          <remote-view v-show="code=='video'" ref="remoteCom" :fetch="() =>fetch('video')"  @my-event="myEvent" />
+      <left-nav-bar></left-nav-bar>
+      <div class="remote_item">
+        <router-view></router-view>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { RemoteView } from "@fmfe/genesis-remote";
 import LeftNavBar from "../src/components/common/leftnavbar/LeftNavBar";
-import axios from "axios";
 export default {
   name: "App",
   components: {
-    RemoteView,
     LeftNavBar,
   },
-  data(){
-    return{
-      code:"play"
-    }
+  data() {
+    return {
+   
+    };
   },
   methods: {
-    async fetchPlay() {
-      // 调用其它服务的组件
-      const res = await axios.get(`http://localhost:3000/api/play`,{params:{renderUrl:`/${this.code}`}});
-      if (res.status === 200) {
-        return res.data;
-      }
-      return null;
-    },
-     async fetch(name) {
-      // 调用其它服务的组件
-      const res = await axios.get(`http://localhost:3000/api/renderJson`,{params:{renderUrl:`/${name}`}});
-      if (res.status === 200) {
-        return res.data;
-      }
-      return null;
-    },
-   async menuClick(item){
-      let {index}=item
-      if(this.code==index) return
-      this.code=index
-    //  this.fetch()
-      // this.$refs.remoteCom.clientLoad()
-    },
-    myEvent(msg){
-     this.code=msg.replace('/','')
-       console.log(this.code);
-    }
+   
   },
 };
 </script>
@@ -68,8 +36,13 @@ export default {
   color: #2c3e50;
   margin-top: 60px; */
 }
-.container{
-  /* display: flex */
+.container {
+  display: flex;
+}
+.remote_item {
+  flex: 1;
+  margin-left: 15px;
+  overflow: hidden;
 }
 @import "assets/css/base.css";
 </style>
