@@ -16,7 +16,7 @@
       :header-row-style="{ height: '20px' }"
       v-if="tableColumn.length != 0"
     >
-      <!-- <el-table-column type="selection" width="55"> </el-table-column> -->
+      <el-table-column align="center" v-if="showBatchDel" type="selection" width="55"> </el-table-column>
       <el-table-column
         v-for="item in tableColumn.filter((item) => !item.isAction)"
         :key="item.row_id"

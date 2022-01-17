@@ -25,11 +25,14 @@
               <!-- left -->
               <el-row :gutter="20">
                 <el-col :sm="24" :md="18" :lg="18" :xl="12" :offset="0">
-                  <el-form-item :label="`测试：`">
+                  <el-form-item label="部门名称：">
                     <!-- 文本框 -->
                     <el-input
                       v-model="form.test"
                     ></el-input>
+                  </el-form-item>
+                     <el-form-item label="部门备注：">
+                      <el-input type="textarea" v-model="form.desc"></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>

@@ -7,7 +7,12 @@
       <TreeComp :tree-data="list" @treeClick="treeClick"></TreeComp>
     </div>
     <div class="right_box">
-      <MainTabBar :activename="activeName" :tabitem="tabItem" @closeTab="closeTab">
+      <MainTabBar
+        :activename="activeName"
+        :tabitem="tabItem"
+        @handleTabClick="handleTabClick"
+        @closeTab="closeTab"
+      >
         <!-- v-if="tableColumn.length" -->
         <div :slot="tabItem[0].label">
           <el-row type="flex" class="row-bg top-box" justify="space-between">
@@ -23,9 +28,15 @@
               </el-form-item>
             </el-form>
           </el-row>
-          <TableComp></TableComp>
+          <TableComp
+            :table-column="tableColumn"
+            :table-data="tableData"
+            :total="total"
+            @editRow="editRow"
+            @delRow="delRow"
+          ></TableComp>
         </div>
-        <div :slot="'新增/编辑'">
+        <div :slot="tabEditLabel">
           <div class="fromContainer">
             <el-form
               :model="form"
@@ -53,20 +64,27 @@
                     <el-input v-model="form.department"></el-input>
                   </el-form-item>
                   <el-form-item label="类型：">
-                    <el-input v-model="form.type"></el-input>
+                    <el-select v-model="form.type" value-key placeholder clearable filterable>
+                      <el-option
+                        v-for="item in typeOptions"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
+                      ></el-option>
+                    </el-select>
                   </el-form-item>
                   <el-form-item label="性别：">
                     <el-input v-model="form.sex"></el-input>
                   </el-form-item>
-                  <el-form-item label="出生年月">
-                    <el-input v-model="form.birthday"></el-input>
+                  <el-form-item label="出生年月：">
+                    <el-date-picker v-model="form.birthday" type="date" placeholder="选择日期时间"></el-date-picker>
                   </el-form-item>
                   <el-form-item label="民族：">
                     <el-input v-model="form.nationality"></el-input>
                   </el-form-item>
                   <el-form-item label>
                     <el-button type="primary" size="mini" @click="confirm">确认</el-button>
-                    <el-button size="mini" @click="cancel">取消</el-button>
+                    <el-button size="mini" @click="closeTab('edit')">取消</el-button>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -83,6 +101,7 @@ import TreeComp from '../components/treecomp/TreeComp';
 import MainTabBar from '../components/maintabbar/MainTabBar';
 import TableComp from '../components/tablecomp/TableComp';
 import { request } from '../request';
+import Api from '../api/Api';
 export default Vue.extend({
   name: "user",
   components: {
@@ -93,7 +112,52 @@ export default Vue.extend({
   data() {
     return {
       list: [],
-      tableColumn: [],
+      tableColumn: [
+        {
+          label: "姓名",
+          prop: "name",
+          fristEnten: true, //首列点击
+          func: "editRow" //点击的方法
+        },
+        {
+          label: "手机号",
+          prop: "mobile"
+        },
+        {
+          label: "部门",
+          prop: "department",
+        },
+        {
+          label: "出生年月",
+          prop: "birthday",
+        },
+        {
+          label: "操作",
+          //是否是操作
+          isAction: true,
+          fixed: "right",
+          //操作的按钮与方法
+          actionItem: [
+            {
+              text: "编辑", //按钮的文本
+              icon: "el-icon-edit",
+              type: "primary", //按钮类型
+              func: "editRow", //按钮的方法
+            },
+          ],
+          //带确认的按钮
+          popconfirmitem: [
+            {
+              text: "删除",
+              icon: "el-icon-delete",
+              func: "delRow",
+              title: "确定删除这条数据吗？",
+            },
+          ],
+        }
+      ],
+      tableData: [],
+      total: 0,
       searchKey: '',
       activeName: '',
       tabItem: [
@@ -102,51 +166,109 @@ export default Vue.extend({
           label: "人员查看",
         },
       ],
+      //0:用户；1:管理员
+      typeOptions: [
+        {
+          label: '用户',
+          value: 0
+        }, {
+          label: '管理员',
+          value: 1
+        }
+      ],
       form: {},
       rules: {},
-      treeSeleteData: {}
+      treeSeleteData: {},
+      tabEditLabel: ''
     };
   },
   mounted() {
-    this.getData()
+    this.getTreeData()
+    this.getTableData()
   },
   watch: {},
   methods: {
-    getData() {
-      let url =
-        "https://mock.mengxuegu.com/mock/61e0ed8b17249f68847fc031/api/getTreeData";
-      request.get(url).then((result) => {
+    getTreeData() {
+      request.get(Api.getTreeData).then((result) => {
         this.list = result.data.data
-        console.log(result);
+        // console.log(result);
       }).catch((err) => {
       });
     },
+    getTableData() {
+      request.get(Api.getTableData).then((result) => {
+        let { code, data, total } = result.data
+        console.log(result.data);
+        if (code == 0) {
+          this.tableData = data
+          this.total = total
+        }
+        // this.list = result.data.data
+      }).catch((err) => {
+      });
+    },
+    treeClick(data) {
+      this.treeSeleteData = data
+      this.tabItem[0].label = data.name
+      this.getTableData()
+    },
     handleAdd() {
       this.activeName = "edit";
-      this.tabItem.push({
-        name: "edit", //移除时使用
-        label: "新增/编辑",
-        closable: true,
-      })
+      this.tabEditLabel = "新增";
+      this.form={};
+      if (!this.isTabOpen(this.activeName)) {
+        this.tabItem.push({
+          name: "edit", //移除时使用
+          label: "新增",
+          closable: true,
+        })
+      } else {
+        this.tabItem[1].label = this.tabEditLabel; //打开就直接变个标题 合理！这个想法恒河里
+      }
+    },
+    editRow(row, field) {
+      this.form = JSON.parse(JSON.stringify(row));
+      //点击编辑时标签页title
+      this.tabEditLabel = (row[field] || row["name"]) + "-编辑";
+      this.activeName = "edit";
+      if (!this.isTabOpen(this.activeName)) {
+        this.tabItem.push({
+          name: "edit",
+          label: this.tabEditLabel,
+          closable: true,
+        });
+      } else {
+        this.tabItem[1].label = this.tabEditLabel;
+      }
     },
     closeTab(name) {
       this.activeName = "init";
+      this.form = {}
       this.tabItem.forEach((element, index) => {
         if (element.name == name) {
           this.tabItem.splice(index, 1);
         }
       });
     },
-    treeClick(data) {
-      this.treeSeleteData = data
-      this.tabItem[0].label = data.name
+    delRow(row) {
+
+    },
+    handleTabClick(tab) {
+      let { name } = tab
+      this.activeName = name;
+    },
+    //判断标签页是否已经打开
+    isTabOpen(value) {
+      return (
+        this.tabItem.findIndex((val) => {
+          return [value].includes(val.name);
+        }) > -1
+      );
     },
     confirm() {
 
     },
-    cancel() {
 
-    },
     onQuery() {
 
     }
@@ -156,6 +278,11 @@ export default Vue.extend({
 <style lang="less" scoped>
 @baseColor: #05adaa;
 .user_container {
+  .el-select,
+  .el-date-editor {
+    width: 100%;
+  }
+
   display: flex;
 
   .left_box {
