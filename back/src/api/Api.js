@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: 邓旭阳
+ * @Date: 2022-01-17 10:02:27
+ * @LastEditors: 邓旭阳
+ * @LastEditTime: 2022-01-20 14:14:16
+ */
 const isProd = process.env.NODE_ENV === 'production'
 const istest = process.env.NODE_ENV === 'test'
 
@@ -18,9 +26,9 @@ let PAY_HEADER = ''
 //     API_HEADER = "https://mock.mengxuegu.com/mock/61e0ed8b17249f68847fc031/api"
 
 // }
- API_HEADER = "https://mock.mengxuegu.com/mock/61e0ed8b17249f68847fc031/api/"
+API_HEADER ='http://localhost:3000'
 export default {
-    getTreeData:API_HEADER+"getTreeData",
-    getTableData:API_HEADER+"getTableData",
+    getTreeData:API_HEADER+'/department/query',
+    getTableData:API_HEADER+'/user/query',
 
 }

@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: 邓旭阳
+ * @Date: 2022-01-10 10:19:40
+ * @LastEditors: 邓旭阳
+ * @LastEditTime: 2022-01-19 17:11:02
+ */
 import { RenderContext } from '@fmfe/genesis-core';
 import { createServerApp } from '@fmfe/genesis-app';
 import Vue from 'vue';
@@ -5,9 +13,6 @@ import ElementUI from 'element-ui';
 import App from './app.vue';
 import {store} from './store';
 import { createRouter } from './router';
-import {request} from '../src/request';
-// import 'element-ui/lib/theme-chalk/index.css';
-Vue.prototype.$request = request;
 const router = createRouter();
 Vue.use(ElementUI);
 export default async (renderContext: RenderContext): Promise<Vue> => {

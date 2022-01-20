@@ -100,7 +100,7 @@ import Vue from "vue";
 import TreeComp from '../components/treecomp/TreeComp';
 import MainTabBar from '../components/maintabbar/MainTabBar';
 import TableComp from '../components/tablecomp/TableComp';
-import { request } from '../request';
+import  request  from '../../_request';
 import Api from '../api/Api';
 export default Vue.extend({
   name: "user",
@@ -184,23 +184,35 @@ export default Vue.extend({
   },
   mounted() {
     this.getTreeData()
-    this.getTableData()
+  
   },
   watch: {},
   methods: {
     getTreeData() {
-      request.get(Api.getTreeData).then((result) => {
-        this.list = result.data.data
+      let params={
+        method:'get',
+        url:Api.getTreeData,
+        params:{directory_code:'department'}
+      }
+      console.log(request);
+      request(params).then((result) => {
+        this.list = result.data.list
         // console.log(result);
+          this.getTableData()
       }).catch((err) => {
       });
     },
     getTableData() {
-      request.get(Api.getTableData).then((result) => {
-        let { code, data, total } = result.data
+       let params={
+        method:'get',
+        url:Api.getTableData,
+        params:{directory_code:'user'}
+      }
+      request(params).then((result) => {
+        let {list, total } = result.data
         console.log(result.data);
-        if (code == 0) {
-          this.tableData = data
+        if (result.errcode == 0) {
+          this.tableData = list
           this.total = total
         }
         // this.list = result.data.data

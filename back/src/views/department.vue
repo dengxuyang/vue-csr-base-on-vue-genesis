@@ -49,7 +49,8 @@ import axios from "axios";
 import TreeComp from '../components/treecomp/TreeComp';
 import MainTabBar from '../components/maintabbar/MainTabBar';
 import TableComp from '../components/tablecomp/TableComp';
-import {request} from '../request';
+import  request  from '../../_request';
+import Api from '../api/Api';
 export default Vue.extend({
   name: "user",
   components:{
@@ -74,18 +75,22 @@ export default Vue.extend({
     };
   },
   mounted() {
-      this.getData()
+      this.getTreeData()
   },
   watch: {},
   methods: {
-     getData() {
-      let url =
-        "https://mock.mengxuegu.com/mock/61e0ed8b17249f68847fc031/api/getTreeData";
-        request.get(url).then((result) => {
-        this.list=result.data.data
-         console.log(result);
-     }).catch((err) => {
-     });;
+      getTreeData() {
+      let params={
+        method:'get',
+        url:Api.getTreeData,
+        params:{directory_code:'department'}
+      }
+      console.log(request);
+      request(params).then((result) => {
+        this.list = result.data.list
+        // console.log(result);
+      }).catch((err) => {
+      });
     },
     onQuery(){
 
