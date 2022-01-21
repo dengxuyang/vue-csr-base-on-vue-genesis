@@ -39,15 +39,9 @@
             <el-popconfirm
               :ref="'popcon' + data.row_id"
               title="此操作将永久删除该数据, 是否继续?"
-              @onConfirm="() => remove(node, data)"
+              @confirm="() => remove(node, data)"
             >
-              <el-link
-                slot="reference"
-                icon="el-icon-delete"
-                :underline="false"
-                type="primary"
-              >
-              </el-link>
+              <el-link slot="reference" icon="el-icon-delete" :underline="false" type="primary"></el-link>
             </el-popconfirm>
           </el-tooltip>
         </span>
@@ -74,6 +68,7 @@ export default {
       expandedkeys: [],
       treeLoading: false,
       currentNodekey: -1,
+      isAdd: false
     };
   },
   methods: {
@@ -81,11 +76,21 @@ export default {
      * 树节点改变
      */
     onTreeCurrentChange(data, node) {
+      if (this.isAdd) {
+        this.isAdd = false
+        this.$nextTick(() => {
+          this.$refs.tree.setCurrentKey(this.currentNodekey);
+          this.$nextTick(() => {
+            document.querySelector(".is-current").firstChild.click();
+          });
+        })
+      } else if (data.row_id != this.currentNodekey && this.currentNodekey == 0) {
+        this.removeNewNode()
+      }
       if (node.isLeaf) {
-       console.log(data);
-       this.$emit('treeClick',data)
-      } else if(!this.showEdit) {
-         this.currentNodekey = node.childNodes[0].data.row_id
+        this.$emit('treeClick', data)
+      } else if (!this.showEdit) {
+        this.currentNodekey = node.childNodes[0].data.row_id
         this.$nextTick(() => {
           this.$refs.tree.setCurrentKey(this.currentNodekey);
           this.$nextTick(() => {
@@ -94,7 +99,56 @@ export default {
         });
       }
     },
-    append(data, node) {},
+    removeNewNode() {
+      let RtreeNode = this.$refs['tree'].getNode(0) 
+      if (RtreeNode) this.$refs['tree'].remove(RtreeNode)
+    },
+    append(node, data) {
+      node.expanded = true
+      this.removeNewNode()
+      const newChild = {
+        row_id: 0,
+        label: '新资源',
+        name: '新资源',
+        remark: '',
+        parent_id: data.row_id,
+        children: []
+      }
+      if (data.row_id === -1) {
+        newChild.parent_id = 0
+      }
+
+      if (!data.children) {
+        this.$set(data, 'children', [])
+      }
+      //判断是否已有新增资源
+      let isHave = false
+      for (const i of data.children) {
+        if (i.row_id == 0) {
+          isHave = true
+        }
+      }
+      
+      if (!isHave) {
+        data.children.push(newChild)
+      }
+      this.currentNodekey = 0
+      this.isAdd = true
+      //this.watchScrollTree++
+    },
+    remove(node, data) {
+      const parent = node.parent;
+      const children = parent.data.children || parent.data;
+      const index = children.findIndex(d => d.row_id === data.row_id);
+      children.splice(index, 1);
+      this.currentNodekey = node.parent.data.row_id
+      this.$nextTick(() => {
+        this.$refs.tree.setCurrentKey(this.currentNodekey);
+        this.$nextTick(() => {
+          document.querySelector(".is-current").firstChild.click();
+        });
+      });
+    }
   },
 };
 </script>

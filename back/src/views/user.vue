@@ -194,7 +194,6 @@ export default Vue.extend({
         url:Api.getTreeData,
         params:{directory_code:'department'}
       }
-      console.log(request);
       request(params).then((result) => {
         this.list = result.data.list
         // console.log(result);
