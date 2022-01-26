@@ -97,11 +97,11 @@
 </template>
 <script lang="js">
 import Vue from "vue";
-import TreeComp from '../components/treecomp/TreeComp';
-import MainTabBar from '../components/maintabbar/MainTabBar';
-import TableComp from '../components/tablecomp/TableComp';
-import  request  from '../../_request';
-import Api from '../api/Api';
+import TreeComp from '../../components/treecomp/TreeComp';
+import MainTabBar from '../../components/maintabbar/MainTabBar';
+import TableComp from '../../components/tablecomp/TableComp';
+import  request  from '../../../_request';
+import Api from '../../api/Api';
 export default Vue.extend({
   name: "user",
   components: {

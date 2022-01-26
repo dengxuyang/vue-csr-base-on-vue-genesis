@@ -1,8 +1,16 @@
+<!--
+ * @Descripttion: 事件列表
+ * @version: 
+ * @Author: 邓旭阳
+ * @Date: 2022-01-25 14:36:01
+ * @LastEditors: 邓旭阳
+ * @LastEditTime: 2022-01-26 10:25:56
+-->
 <template>
   <div class="user_container">
     <div class="left_box el-tabs--border-card">
       <div class="title">
-        <i class="el-icon-s-fold"></i> 部门管理
+        <i class="el-icon-s-fold"></i> 事件管理
       </div>
       <TreeComp :tree-data="list" :show-edit="true" @treeClick="treeClick"></TreeComp>
     </div>
@@ -24,11 +32,43 @@
               <!-- left -->
               <el-row :gutter="20">
                 <el-col :sm="24" :md="18" :lg="18" :xl="12" :offset="0">
-                  <el-form-item label="部门名称：">
+                  <el-form-item label="事件名称：">
                     <!-- 文本框 -->
                     <el-input v-model="form.name"></el-input>
                   </el-form-item>
-                  <el-form-item label="部门备注：">
+                  <el-form-item label="事件编码：">
+                    <el-input rows="8" v-model="form.remark"></el-input>
+                  </el-form-item>
+                  <el-form-item label="事件分类：">
+                    <el-select v-model="form.eventType" value-key="" placeholder="" clearable filterable >
+                      <el-option v-for="item in type_Options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                      </el-option>
+                    </el-select>
+                    
+                  </el-form-item>
+                  <el-form-item label="事件等级：">
+                   <el-select v-model="form.eventType" value-key="" placeholder="" clearable filterable >
+                      <el-option v-for="item in type_Options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                      </el-option>
+                    </el-select>
+                    
+                  </el-form-item>
+                  <el-form-item label="对应预案：">
+                    <el-select v-model="form.eventType" value-key="" placeholder="" clearable filterable >
+                      <el-option v-for="item in type_Options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                  <el-form-item label="事件备注：">
                     <el-input type="textarea" rows="8" v-model="form.remark"></el-input>
                   </el-form-item>
                   <el-form-item label>
@@ -46,11 +86,11 @@
 <script lang="js">
 import Vue from "vue";
 import axios from "axios";
-import TreeComp from '../components/treecomp/TreeComp';
-import MainTabBar from '../components/maintabbar/MainTabBar';
-import TableComp from '../components/tablecomp/TableComp';
-import request from '../../_request';
-import Api from '../api/Api';
+import TreeComp from '../../components/treecomp/TreeComp';
+import MainTabBar from '../../components/maintabbar/MainTabBar';
+import TableComp from '../../components/tablecomp/TableComp';
+import request from '../../../_request';
+import Api from '../../api/Api';
 export default Vue.extend({
   name: "user",
   components: {
@@ -64,10 +104,11 @@ export default Vue.extend({
       tableColumn: [],
       searchKey: '',
       activeName: '',
+      type_Options:[],
       tabItem: [
         {
           name: "init", //移除时使用
-          label: "部门编辑",
+          label: "事件编辑",
         },
       ],
       form: {},
